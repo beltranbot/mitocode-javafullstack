@@ -2,6 +2,8 @@ package com.mitocode.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +35,12 @@ public class PacienteController {
 	}
 	
 	@PostMapping
-	public Paciente registrar(@RequestBody Paciente p) {
+	public Paciente registrar(@Valid @RequestBody Paciente p) {
 		return service.registrar(p);
 	}
 	
 	@PutMapping
-	public Paciente modificar(@RequestBody Paciente p) {
+	public Paciente modificar(@Valid @RequestBody Paciente p) {
 		return service.modificar(p);
 	}
 	
