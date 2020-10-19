@@ -1,5 +1,6 @@
 package com.mitocode.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mitocode.exception.ModeloNotFoundException;
 import com.mitocode.model.Paciente;
@@ -41,11 +43,16 @@ public class PacienteController {
 		}
 		return new ResponseEntity<Paciente>(obj, HttpStatus.OK);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Paciente> registrar(@Valid @RequestBody Paciente p) {
 		Paciente obj = service.registrar(p);
-		return new ResponseEntity<Paciente>(obj, HttpStatus.CREATED);
+		// bloque de localizacion
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(obj.getIdPaciente())
+				.toUri();
+		return ResponseEntity.created(location).build(); 
 	}
 	
 	@PutMapping
