@@ -10,6 +10,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Informacion del paciente")
 @Entity
 @Table(name = "paciente")
 public class Paciente {
@@ -18,6 +21,7 @@ public class Paciente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPaciente;
 
+	@Schema(description = "Nombre del paciente")
 	@Size(min = 3, message = "{nombres.size}")
 	@Column(name = "nombres", nullable = false, length = 70)
 	private String nombres;

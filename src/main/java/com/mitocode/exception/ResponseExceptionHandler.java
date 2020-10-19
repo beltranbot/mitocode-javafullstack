@@ -17,6 +17,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 	
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<ExceptionResponse> manejarTodasExcepciones(
+			Exception ex,
+			WebRequest request
+	) {
+		ExceptionResponse er = new ExceptionResponse(LocalDateTime.now(),
+				ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<ExceptionResponse>(
+				er,
+				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@ExceptionHandler(ModeloNotFoundException.class)
 	public ResponseEntity<ExceptionResponse> manejarModeloNotFoundException(
 			ModeloNotFoundException ex,
