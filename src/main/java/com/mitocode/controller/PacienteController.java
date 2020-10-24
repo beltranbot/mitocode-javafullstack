@@ -1,11 +1,16 @@
 package com.mitocode.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +47,18 @@ public class PacienteController {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
 		}
 		return new ResponseEntity<Paciente>(obj, HttpStatus.OK);
+	}
+	
+	@GetMapping("/hateoas/{id}")
+	public EntityModel<Paciente> listarPorIdHateoas(@PathVariable("id") Integer id) {
+		Paciente obj = service.listarPorId(id);
+		if (obj.getIdPaciente() == null) {
+			throw new ModeloNotFoundException("ID NO ENCONTRADO " + id);
+		}
+		EntityModel<Paciente> recurso = EntityModel.of(obj);
+		WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).listarPorId(id));
+		recurso.add(linkTo.withRel("paciente-recurso"));
+		return recurso;
 	}
 
 	@PostMapping
