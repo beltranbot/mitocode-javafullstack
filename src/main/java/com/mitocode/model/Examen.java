@@ -17,7 +17,7 @@ public class Examen {
 	@Column(name = "nombre", nullable = false, length = 50)
 	private String nombre;
 	@Column(name = "descripcion", nullable = true, length = 150)
-	private String description;
+	private String descripcion;
 
 	public Integer getIdExamen() {
 		return idExamen;
@@ -35,12 +35,12 @@ public class Examen {
 		this.nombre = nombre;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	@Override
