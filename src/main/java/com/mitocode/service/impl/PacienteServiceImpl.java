@@ -18,5 +18,5 @@ public class PacienteServiceImpl extends CRUDImpl<Paciente, Integer> implements 
 	protected IGenericRepo<Paciente, Integer> getRepo() {
 		return repo;
 	}
-
+	
 }
