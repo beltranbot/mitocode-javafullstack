@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mitocode.dto.ConsultaListaExamenDTO;
+import com.mitocode.dto.ConsultaResumenDTO;
 import com.mitocode.dto.FiltroConsultaDTO;
 import com.mitocode.exception.ModeloNotFoundException;
 import com.mitocode.model.Consulta;
@@ -102,6 +103,13 @@ public class ConsultaController {
 			}
 		}
 		return new ResponseEntity<List<Consulta>>(consultas, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/listarResumen")
+	public ResponseEntity<List<ConsultaResumenDTO>> listarResumen() {
+		List<ConsultaResumenDTO> consultas = new ArrayList<>();
+		consultas = service.listarResumen();
+		return new ResponseEntity<List<ConsultaResumenDTO>>(consultas, HttpStatus.OK);
 	}
 
 }
