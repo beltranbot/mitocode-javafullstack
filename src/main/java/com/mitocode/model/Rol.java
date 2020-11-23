@@ -12,7 +12,7 @@ public class Rol {
 	@Id
 	private Integer idRol;
 	@Column(name = "nombre")
-	private String nomber;
+	private String nombre;
 	@Column(name = "descripcion")
 	private String descripcion;
 
@@ -24,12 +24,12 @@ public class Rol {
 		this.idRol = idRol;
 	}
 
-	public String getNomber() {
-		return nomber;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setNomber(String nomber) {
-		this.nomber = nomber;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getDescripcion() {
