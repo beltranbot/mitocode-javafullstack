@@ -1,9 +1,13 @@
 package com.mitocode.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +20,17 @@ import com.mitocode.repo.IConsultaRepo;
 import com.mitocode.repo.IGenericRepo;
 import com.mitocode.service.IConsultaService;
 
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 @Service
 public class ConsultaServiceImpl extends CRUDImpl<Consulta, Integer> implements IConsultaService {
 
 	@Autowired
 	private IConsultaRepo repo;
-	
+
 	@Autowired
 	private IConsultaExamenRepo ceRepo;
 
@@ -35,7 +44,7 @@ public class ConsultaServiceImpl extends CRUDImpl<Consulta, Integer> implements 
 	public Consulta registrarTransaccional(ConsultaListaExamenDTO dto) throws Exception {
 		dto.getConsulta().getDetalleConsulta().forEach(detalle -> detalle.setConsulta(dto.getConsulta()));
 		repo.save(dto.getConsulta());
-		
+
 		dto.getLstExamen().forEach(examen -> ceRepo.registrar(dto.getConsulta().getIdConsulta(), examen.getIdExamen()));
 		return dto.getConsulta();
 	}
@@ -64,6 +73,24 @@ public class ConsultaServiceImpl extends CRUDImpl<Consulta, Integer> implements 
 			consultas.add(cr);
 		});
 		return consultas;
+	}
+
+	@Override
+	public byte[] generarReporte() {
+		byte[] data = null;
+		
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("txt_titulo", "Prueba de titulo");
+		
+		try {
+			File file = new ClassPathResource("/reports/consultas.jasper").getFile();
+			JasperPrint print = JasperFillManager.fillReport(file.getPath(), parametros,
+					new JRBeanCollectionDataSource(this.listarResumen()));
+			data = JasperExportManager.exportReportToPdf(print);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 }

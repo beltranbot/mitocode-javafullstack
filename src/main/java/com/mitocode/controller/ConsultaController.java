@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,6 +111,13 @@ public class ConsultaController {
 		List<ConsultaResumenDTO> consultas = new ArrayList<>();
 		consultas = service.listarResumen();
 		return new ResponseEntity<List<ConsultaResumenDTO>>(consultas, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/generarReporte", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> generarReporte() {
+		byte[] data = null;
+		data = service.generarReporte();
+		return new ResponseEntity<byte[]>(data, HttpStatus.OK);
 	}
 
 }
